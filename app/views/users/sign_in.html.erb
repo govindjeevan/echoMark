@@ -1,0 +1,15 @@
+<%= form_tag(:controller => "users", :action => "sign_in") do %>
+
+  <div class="field">
+    <%= text_field_tag :username %>
+  </div>
+
+  <div class="field">
+    <%= text_field_tag :password %>
+  </div>
+
+
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+<% end %>
