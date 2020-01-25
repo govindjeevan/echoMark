@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
   # POST /sessions.json
   def create
     @session = Session.new(session_params)
-
+    @session.key = @session.generate_key
     respond_to do |format|
       if @session.save
         format.html { redirect_to @session, notice: 'Session was successfully created.' }
@@ -36,6 +36,17 @@ class SessionsController < ApplicationController
       end
     end
   end
+
+
+  def get_attendance
+    if params[:key].present?
+      session = Session.where(:key => params[:key]).last
+      if session.present? and params[:user_id].present?
+        Attendance.first_or_create(:user_id => params[:user_id], :session_id => session.id)
+      end
+    end
+  end
+
 
   # PATCH/PUT /sessions/1
   # PATCH/PUT /sessions/1.json
@@ -71,6 +82,6 @@ class SessionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def session_params
-    params.require(:session).permit(:user_id)
+    params.permit(:user_id)
   end
 end

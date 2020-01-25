@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :attendances
-  resources :sessions
+  resources :sessions  do
+    collection do
+      get "sign_in"
+    end
+  end
   resources :users do
     collection do
       get "sign_in"
