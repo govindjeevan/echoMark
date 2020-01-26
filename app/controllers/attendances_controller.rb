@@ -24,10 +24,15 @@ class AttendancesController < ApplicationController
   # POST /attendances
   # POST /attendances.json
   def create
-    @attendance = Attendance.new(attendance_params)
+    if params[:key].present?
+      session = Session.where(:key => params[:key]).last
+      if session.present? and params[:user_id].present?
+        @attendance = Attendance.first_or_create(:user_id => params[:user_id], :session_id => session.id)
+      end
+    end
 
     respond_to do |format|
-      if @attendance.save
+      if @attendance
         format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
         format.json { render :show, status: :created, location: @attendance }
       else
@@ -62,13 +67,14 @@ class AttendancesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_attendance
-      @attendance = Attendance.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def attendance_params
-      params.permit(:user_id, :session_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_attendance
+    @attendance = Attendance.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def attendance_params
+    params.permit(:user_id, :key)
+  end
 end
