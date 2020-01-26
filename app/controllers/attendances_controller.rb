@@ -24,10 +24,12 @@ class AttendancesController < ApplicationController
   # POST /attendances
   # POST /attendances.json
   def create
-    if params[:key].present?
-      session = Session.where(:key => params[:key]).last
+    if params[:key].present? and params[:session_id].present?
+      session = Session.find(params[:session_id])
       if session.present? and params[:user_id].present?
-        @attendance = Attendance.first_or_create(:user_id => params[:user_id], :session_id => session.id)
+        if session.key == params[:key]
+          @attendance = Attendance.first_or_create(:user_id => params[:user_id], :session_id => session.id)
+        end
       end
     end
 

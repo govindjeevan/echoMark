@@ -3,7 +3,7 @@ class Session < ApplicationRecord
 
 
   def generate_key
-    random_string = (0...8).map { ('a'..'z').to_a[rand(26)] }.join
+    random_string = (0...4).map { ('a'..'z').to_a[rand(26)] }.join
     random_string
   end
 end
