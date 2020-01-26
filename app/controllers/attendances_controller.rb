@@ -37,7 +37,7 @@ class AttendancesController < ApplicationController
     end
 
     respond_to do |format|
-      if @attendance
+      if @attendance.save
         format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
         format.json { render :show, status: :created, location: @attendance }
       else
