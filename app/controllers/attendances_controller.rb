@@ -28,7 +28,10 @@ class AttendancesController < ApplicationController
       session = Session.find(params[:session_id])
       if session.present? and params[:user_id].present?
         if session.key == params[:key]
-          @attendance = Attendance.first_or_create(:user_id => params[:user_id], :session_id => session.id)
+          @attendance = Attendance.where(:user_id => params[:user_id], :session_id => session.id).last
+          if @attendance.nil?
+            @attendance = Attendance.new(:user_id => params[:user_id], :session_id => session.id)
+          end
         end
       end
     end
