@@ -4,7 +4,11 @@ class SessionsController < ApplicationController
   # GET /sessions
   # GET /sessions.json
   def index
-    @sessions = Session.all
+    if params[:session_id].present?
+      @sessions = Session.where(:session_id => params[:session_id])
+    else
+      @sessions = Session.all
+    end
   end
 
   # GET /sessions/1
@@ -82,6 +86,6 @@ class SessionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def session_params
-    params.permit(:user_id)
+    params.permit(:user_id, :session_id)
   end
 end
