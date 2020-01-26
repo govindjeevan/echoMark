@@ -4,7 +4,13 @@ class AttendancesController < ApplicationController
   # GET /attendances
   # GET /attendances.json
   def index
-    @attendances = Attendance.all
+    if params[:session_id].present?
+      @attendances = Attendance.where(:session_id => params[:session_id])
+    elsif params[:user_id].present?
+      @attendances = Attendance.where(:user_id => params[:user_id])
+    else
+      @attendances = Attendance.all
+    end
   end
 
   # GET /attendances/1

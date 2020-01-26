@@ -4,11 +4,7 @@ class SessionsController < ApplicationController
   # GET /sessions
   # GET /sessions.json
   def index
-    if params[:session_id].present?
-      @sessions = Session.where(:session_id => params[:session_id])
-    else
       @sessions = Session.all
-    end
   end
 
   # GET /sessions/1
